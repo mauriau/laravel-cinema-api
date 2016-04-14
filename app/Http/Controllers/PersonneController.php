@@ -165,7 +165,7 @@ class PersonneController extends Controller
     /**
      * @SWG\Get(
      *     path="/personne/{id_personne}",
-     *     summary="Affiche une personne.",
+     *     summary="Display a personne.",
      *     tags={"personne"},
      *     operationId="getPersonne",
      *     produces={"application/xml", "application/json"},
