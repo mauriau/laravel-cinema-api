@@ -483,7 +483,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6037051ec6ba51ba2b93ffa8163915b6db3233dc",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/537e8613d806a6aaae93d5f2735bd2842d984f03",
                 "reference": "6037051ec6ba51ba2b93ffa8163915b6db3233dc",
                 "shasum": ""
             },

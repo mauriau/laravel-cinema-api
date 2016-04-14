@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Models\Film;
 
 class FilmController extends Controller
 {
@@ -15,10 +16,9 @@ class FilmController extends Controller
      */
     public function index()
     {
-        //
-        \DB:enableQueryLog();
-        $films = Film:all();
-        print_r(DB::connection('my_connection')->getQueryLog());
+        \DB::enableQueryLog();
+        $films = Film::get();
+        print_r(\DB::getQueryLog());
         return $films;
     }
 
