@@ -19,6 +19,222 @@
         "http"
     ],
     "paths": {
+        "/genre": {
+            "get": {
+                "tags": [
+                    "genre"
+                ],
+                "summary": "Display all of the genres.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "genre"
+                ],
+                "summary": "Add a genre.",
+                "operationId": "postGenre",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Name of the genre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            }
+        },
+        "/genre/{id_genre}": {
+            "get": {
+                "tags": [
+                    "genre"
+                ],
+                "summary": "Display a genre.",
+                "operationId": "getGenre",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_genre",
+                        "in": "path",
+                        "description": "Id of the genre",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The genre that you looking for doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "genre"
+                ],
+                "summary": "Modify a genre.",
+                "operationId": "putGenre",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_genre",
+                        "in": "path",
+                        "description": "Id of the genre",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Name of the genre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The genre that you looking for doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "genre"
+                ],
+                "summary": "Delete a genre.",
+                "operationId": "deleteGenre",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_genre",
+                        "in": "path",
+                        "description": "Id of the genre",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The genre that you want to delete doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Genre"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            }
+        },
         "/personne": {
             "get": {
                 "tags": [
@@ -72,6 +288,7 @@
                     "reduction"
                 ],
                 "summary": "Add a discount.",
+                "operationId": "postReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -139,6 +356,7 @@
                     "reduction"
                 ],
                 "summary": "Display a discount.",
+                "operationId": "getReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -181,6 +399,7 @@
                     "reduction"
                 ],
                 "summary": "Modify a discount.",
+                "operationId": "putReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -262,6 +481,7 @@
                     "reduction"
                 ],
                 "summary": "Delete a discount.",
+                "operationId": "deleteReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -302,6 +522,28 @@
         }
     },
     "definitions": {
+        "Genre": {
+            "required": [
+                "id_genre"
+            ],
+            "properties": {
+                "id_genre": {
+                    "description": "Class Genre",
+                    "type": "number",
+                    "format": "int64",
+                    "default": 1
+                },
+                "nom": {
+                    "description": "Class Genre",
+                    "type": "string",
+                    "format": "string",
+                    "default": "genre"
+                }
+            },
+            "xml": {
+                "name": "Genre"
+            }
+        },
         "Reduction": {
             "required": [
                 "id_reduction"

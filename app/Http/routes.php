@@ -20,5 +20,5 @@ Route::resource('fonction', 'FonctionController');
 Route::resource('reduction', 'ReductionController');
 Route::resource('film', 'FilmController');
 Route::resource('salle', 'SalleController');
-Route::resource('distributeur', 'DistribtueurController');
+Route::resource('distributeur', 'DistributeurController');
 Route::resource('genre', 'GenreController');
