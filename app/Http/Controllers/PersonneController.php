@@ -12,7 +12,6 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Input;
 
-
 class PersonneController extends Controller
 {
 
@@ -66,20 +65,56 @@ class PersonneController extends Controller
                             'Problème lors de l\'insertion en base', 500); // HTTP Status code
         }
     }
-    
+
+        /**
+     * @SWG\Get(
+     *     path="/personne/{id_personne}/fonctions",
+     *     summary="Affiche les personnes qui on la fonction {id}",
+     *     tags={"fonction_personne"},
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *             type="array",
+     *             @SWG\Items(ref="#/definitions/fonction")
+     *         ),
+     *     ),
+     * )
+     */
     public function getFonctions($id_personne)
     {
         $personne = Personne::find($id_personne);
         $personne->fonctions;
         return $personne;
-        
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/personne/{id_personne}",
+     *     summary="Affiche une personne.",
+     *     tags={"personne"},
+     *     operationId="getPersonne",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Personne id to get",
+     *         in="path",
+     *         name="id_personne",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Personne"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Personne does not exist",
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -94,18 +129,95 @@ class PersonneController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Put(
+     *     path="/personne/{id_personne}",
+     *     summary="Update an existing personne in storage.",
+     *     tags={"personne"},
+     *     operationId="putPersonne",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Personne identifier",
+     *         in="path",
+     *         name="id_personne",
+     *         type="integer",
+     *         @SWG\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Nom Identifier",
+     *         in="formData",
+     *         name="nom",
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Prenom Identifier",
+     *         in="formData",
+     *         name="prenom",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Date de naissance",
+     *         in="formData",
+     *         name="date_naissance",
+     *         type="date"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="email of the personne",
+     *         in="formData",
+     *         name="email",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="adresse of the personne",
+     *         in="formData",
+     *         name="adresse",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="code postal of the personne",
+     *         in="formData",
+     *         name="cpostal",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="ville of the personne",
+     *         in="formData",
+     *         name="ville",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="email of the personne",
+     *         in="formData",
+     *         name="paysl",
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Personne does not exist",
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
         $personne = Personne::find($id);
 
         $validator = Validator::make($request->all(), [
+                    'nom' => 'required',
+                    'prenom' => 'required',
+                    'date_naissance' => 'date|required',
                     'email' => 'required|unique:personne',
+                    'cpostal' => 'string',
+                    'ville' => 'string',
+                    'pays' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -118,15 +230,35 @@ class PersonneController extends Controller
                             ['error' => 'this personne does not exist'], 404); // HTTP Status code
         }
 
-        $personne->email = $request->email;
+        $personne = new Personne(Input::all());
         $personne->save();
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Delete(
+     *     path="/personne/{id_personne}",
+     *     summary="Remove the specified personne from storage.",
+     *     tags={"personne"},
+     *     operationId="deletePersonne",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Personne identifier",
+     *         in="path",
+     *         name="id_personne",
+     *         type="integer",
+     *         @SWG\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Personne does not exist",
+     *     )
+     * )
      */
     public function destroy($id)
     {

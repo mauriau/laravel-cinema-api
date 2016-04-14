@@ -17,7 +17,7 @@ class FilmController extends Controller
     /**
      * @SWG\Get(
      *     path="/film",
-     *     summary="Display a listing of all films.",
+     *     summary="Affiche la liste des films.",
      *     tags={"film"},
      *     produces={"application/xml", "application/json"},
      *     @SWG\Response(
@@ -33,15 +33,6 @@ class FilmController extends Controller
     public function index()
     {
         $films = Film::all();
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
