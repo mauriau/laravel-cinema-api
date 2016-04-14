@@ -41,7 +41,6 @@
                     }
                 }
             }
-
         },
         "/reduction": {
             "get": {
@@ -66,7 +65,7 @@
                 }
             }
         },
-        "/reduction/{$id}": {
+        "/reduction/{id_reduction}": {
             "get": {
                 "tags": [
                     "reduction"
@@ -75,6 +74,15 @@
                 "produces": [
                     "application/xml",
                     "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_reduction",
+                        "in": "path",
+                        "description": "Id de la r\u00e9duction",
+                        "required": true,
+                        "type": "integer"
+                    }
                 ],
                 "responses": {
                     "200": {

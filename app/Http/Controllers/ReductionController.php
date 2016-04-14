@@ -54,11 +54,24 @@ class ReductionController extends Controller
     }
 
     /**
+     *
+     *
+     * @param  int  $id_reduction
+     * @return \Illuminate\Http\Response
+     *
+     *
      * @SWG\Get(
-     *     path="/reduction/{$id}",
+     *     path="/reduction/{id_reduction}",
      *     summary="Affiche une réduction spécifique.",
      *     tags={"reduction"},
      *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="id_reduction",
+     *         in="path",
+     *         description="Id de la réduction",
+     *         required=true,
+     *         type="integer",
+     *     ),
      *     @SWG\Response(
      *          response=200,
      *          description="successful operation",
