@@ -16,7 +16,10 @@ class DistributeurController extends Controller
      */
     public function index()
     {
-        return Distribtueur::all();//
+        \DB::enableQueryLog();
+        $distributeurs = Distributeur::get();
+        print_r(\DB::getQueryLog());
+        return $distributeurs;
     }
 
     /**
@@ -24,6 +27,8 @@ class DistributeurController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function create()
     {
         //
