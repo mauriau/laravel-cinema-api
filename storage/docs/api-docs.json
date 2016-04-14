@@ -18,7 +18,31 @@
     "schemes": [
         "http"
     ],
-    "paths": {},
+    "paths": {
+        "/personne": {
+            "get": {
+                "tags": [
+                    "personne"
+                ],
+                "summary": "Display a listing of all personnes.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Perrsonne"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     "definitions": {},
     "externalDocs": {
         "description": "Find out more about Swagger",
