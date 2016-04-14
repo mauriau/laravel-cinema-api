@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Input;
 
 
-class PersonnelController extends Controller
+class PersonneController extends Controller
 {
 
     /**
@@ -27,7 +27,7 @@ class PersonnelController extends Controller
      *         description="successful operation",
      *         @SWG\Schema(
      *             type="array",
-     *             @SWG\Items(ref="#/definitions/Perrsonne")
+     *             @SWG\Items(ref="#/definitions/Personne")
      *         ),
      *     ),
      * )
@@ -66,6 +66,14 @@ class PersonnelController extends Controller
                             'Problème lors de l\'insertion en base', 500); // HTTP Status code
         }
     }
+    
+    public function getFonctions($id_personne)
+    {
+        $personne = Personne::find($id_personne);
+        $personne->fonctions;
+        return $personne;
+        
+    }
 
     /**
      * Display the specified resource.
@@ -83,17 +91,6 @@ class PersonnelController extends Controller
         }
 
         return $personne;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

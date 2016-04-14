@@ -3,19 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Models\Fonction;
 
 class FonctionController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/fonction",
+     *     summary="Display a listing of all fonctions.",
+     *     tags={"personne"},
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *             type="array",
+     *             @SWG\Items(ref="#/definitions/fonction")
+     *         ),
+     *     ),
+     * )
      */
     public function index()
     {
-        //
+        return Fonction::all();
+    }
+
+    public function getPersonnes($id_fonction)
+    {
+        $fonction = Fonction::find($id_fonction);
+        $fonction->personnes;
+        return $fonction;
     }
 
     /**
@@ -83,4 +102,5 @@ class FonctionController extends Controller
     {
         //
     }
+
 }
