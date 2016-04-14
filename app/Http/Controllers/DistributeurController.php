@@ -126,6 +126,7 @@ class DistributeurController extends Controller
         $validator = Validator::make($request->all(),[
             'nom'=>'required|string|unique:distributeurs,nom',
             'telephone'=>'string',
+            'adresse'=>'string',
             'cpostal'=>'string',
             'ville'=>'string',
             'pays'=>'string'
@@ -147,25 +148,42 @@ class DistributeurController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/disrtibuteur/{id_distributeur}",
+     *     summary="Display a movie dealer",
+     *     tags={"membre"},
+     *     operationId="getDistributeur",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Id of movie dealer",
+     *         in="path",
+     *         name="id_distributeur",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Distributeur finded",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Distributeur"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Distributeur does not exist",
+     *     )
+     * )
      */
     public function show($id)
     {
-        //
-    }
+        $distributeur = Distributeur::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if (empty($distributeur)) {
+            return response()->json(
+                            ['error' => 'This dealer does not exist'], 404); // HTTP Status code
+        }
+
+        return $distributeur;
     }
 
     /**

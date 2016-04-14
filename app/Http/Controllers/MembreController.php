@@ -148,7 +148,7 @@ class MembreController extends Controller
      *     )
      * )
      */
-    public function show($id, $pers, $abo, $forfait)
+    public function show($id)
     {
         $membre = Membre::find($id);
 
