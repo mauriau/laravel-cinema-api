@@ -19,3 +19,4 @@ Route::resource('personnel', 'PersonnelController');
 Route::resource('fonction', 'FonctionController');
 Route::resource('reduction', 'ReductionController');
 Route::resource('film', 'FilmController');
+Route::resource('salle', 'SalleController');

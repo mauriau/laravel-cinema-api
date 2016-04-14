@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Models\Distribtueur;
 
-class FilmController extends Controller
+class DistributeurController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +16,7 @@ class FilmController extends Controller
      */
     public function index()
     {
-        //
-        \DB:enableQueryLog();
-        $films = Film:all();
-        print_r(DB::connection('my_connection')->getQueryLog());
-        return $films;
+        return Distribtueur::all();//
     }
 
     /**
