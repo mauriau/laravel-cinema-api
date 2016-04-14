@@ -5,17 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Models\Reduction;
 
 class ReductionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @SWG\Get(
+     *     path="/reduction",
+     *     summary="Affiche une liste de réductions.",
+     *     tags={"reduction"},
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Reduction")
+     *          ),
+     *     ),
+     * )
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $reduc = Reduction::all();
+        return $reduc;
     }
 
     /**
@@ -40,14 +54,31 @@ class ReductionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @SWG\Get(
+     *     path="/reduction/{$id}",
+     *     summary="Affiche une réduction spécifique.",
+     *     tags={"reduction"},
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Reduction/{$id}")
+     *          ),
+     *     ),
+     * )
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $reduc = Reduction::find($id);
+
+        if(empty($reduc)){
+            return response()->json(
+                ['error' => 'Cette redéduction n\'existe pas !'],404); //HTTP Status code
+        }
+        return $reduc;
     }
 
     /**
