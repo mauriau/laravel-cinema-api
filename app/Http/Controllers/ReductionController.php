@@ -286,12 +286,13 @@ class ReductionController extends Controller
 
         }
 
-        $reduc->nom = $request->nom;
-        $reduc->pourcentage_reduction = $request->pourcentage_reduction;
-        $reduc->date_debut = $request->date_debut;
-        $reduc->date_fin = $request->date_fin;
-
+        $reduc->fill(Input::all());
         $reduc->save();
+        return response()->json(
+            ['Fields have correctly been updated'],
+            200
+        );
+
     }
 
     /**
