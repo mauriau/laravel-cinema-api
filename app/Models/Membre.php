@@ -21,7 +21,7 @@ class Membre extends Model
 
     protected $primaryKey = 'id_membre';
 
-	public $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'id_personne',
@@ -35,6 +35,11 @@ class Membre extends Model
     public function abonnement()
     {
         return $this->belongsTo('App\Models\Abonnement', 'id_abonnement');
+    }
+
+    public function personne()
+    {
+        return $this->belongsTo('App\Models\Personne', 'id_personne');
     }
         
 }

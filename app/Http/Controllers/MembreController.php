@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Models\Membre;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Input;
 
 class MembreController extends Controller
 {
+
     /**
      * @SWG\Get(
      *     path="/membre",
-     *     summary="Retourne tous les membres ou un code erreur 204 si aucun membre trouvé",
+     *     summary="Display a listing of all membres.",
      *     tags={"membre"},
      *     produces={"application/xml", "application/json"},
      *     @SWG\Response(
      *         response=200,
-     *         description="liste des membres trouvés",
+     *         description="List of members",
      *         @SWG\Schema(
      *             type="array",
      *             @SWG\Items(ref="#/definitions/Membre")
@@ -24,7 +31,7 @@ class MembreController extends Controller
      *     ),
      *     @SWG\Response(
      *         response=204,
-     *         description="pas de membres trouvés",
+     *         description="No find members",
      *         @SWG\Schema(
      *             type="array",
      *             @SWG\Items(ref="#/definitions/Membre")
@@ -34,82 +41,319 @@ class MembreController extends Controller
      */
     public function index()
     {
-    	$membres = Membre::all();
+        $membres = Membre::all();
 
-    	if ($membres->count() == 0)
-    	{
+        if ($membres->count() == 0) {
 
-    		return response()->json(
-    				['error' => 'Aucun membre trouve'],
-    				204); // HTTP Status code
-    	}
-    	
+            return response()->json(
+                            ['error' => 'No find members'], 204); // HTTP Status code
+        }
+
         return $membres;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @SWG\Post(
+     *     path="/membre",
+     *     summary="Add Membre into storage",
+     *     tags={"membre"},
+     *     operationId="postMembre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="id of membre",
+     *         in="formData",
+     *         name="id_personne",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Id of abonnement",
+     *         in="formData",
+     *         name="id_abonnement",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Created date",
+     *         in="formData",
+     *         name="date_inscription",
+     *         type="string",
+     *         format="date",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Started abonnement date",
+     *         in="formData",
+     *         name="debut_abonnement",
+     *         type="string",
+     *         format="date",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Membre inserted",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Membre"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *     )
+     * )
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+                    'id_personne' => 'required|numeric',
+                    'id_abonnement' => 'required|numeric',
+                    'date_inscription' => 'required|date_format:"Y-m-d"',
+                    'debut_abonnement' => 'required|date_format:"Y-m-d"',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                            ['errors' => $validator->errors()->all()], 422); // HTTP Status code
+        }
+
+        $membre = new Membre(Input::all());
+        if ($membre->save()) {
+            return response()->json(
+                            $membre, 201);
+        }
+        return response()->json(
+                        ['errors' => 'fail to insert new membre'], 422);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/membre/{id_membre}",
+     *     summary="Display a member",
+     *     tags={"membre"},
+     *     operationId="getMembre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Id of membre",
+     *         in="path",
+     *         name="id_membre",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Membre finded",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Membre"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Membre does not exist",
+     *     )
+     * )
      */
-    public function show($id)
+    public function show($id, $pers, $abo, $forfait)
     {
-        //
+        $membre = Membre::find($id);
+
+        if (empty($membre)) {
+            return response()->json(
+                            ['error' => 'This membre does not exist'], 404); // HTTP Status code
+        }
+
+        return $membre;
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/membre/{id_membre}/extras/{pers}/{abo}/{forfait}",
+     *     summary="Display a member",
+     *     tags={"membre"},
+     *     operationId="getMembre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Id of membre",
+     *         in="path",
+     *         name="id_membre",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="get personne true/false; default:false",
+     *         in="path",
+     *         name="pers",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="get abonnement true/false; default:false",
+     *         in="path",
+     *         name="abo",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="get forfait true/false; default:false",
+     *         in="path",
+     *         name="forfait",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Membre finded",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Membre"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Membre does not exist",
+     *     )
+     * )
      */
-    public function edit($id)
+    public function getMembreWithExtras($id, $pers = 0, $abo = 0, $forfait = 0)
     {
-        //
+        $membre = Membre::find($id);
+
+        if (empty($membre)) {
+            return response()->json(
+                            ['error' => 'This membre does not exist'], 404); // HTTP Status code
+        }
+        if ($pers) {
+            $membre->personne;
+        }
+        if ($abo) {
+            $membre->abonnement;
+            if ($forfait) {
+                $membre->abonnement->forfait;
+            }
+        }
+        return $membre;
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @SWG\Get(
+     *     path="/membre/{id_membre}/abonnement",
+     *     summary="Display a member with his abonnement",
+     *     tags={"membre"},
+     *     operationId="getMembreWithPersonne",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Id of membre",
+     *         in="path",
+     *         name="id_membre",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Membre finded",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Membre"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Membre does not exist",
+     *     )
+     * )
+     */
+    private function getAbonnement($id)
+    {
+        $membre = membre::find($id);
+        $membre->abonnement;
+        return $membre;
+    }
+
+    /**
+     * @SWG\Put(
+     *     path="/membre/{id_mebre}",
+     *     summary="Update a Membre",
+     *     tags={"membre"},
+     *     operationId="putMembre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="id of membre",
+     *         in="formData",
+     *         name="id_personne",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Id of abonnement",
+     *         in="formData",
+     *         name="id_abonnement",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Created date",
+     *         in="formData",
+     *         name="date_inscription",
+     *         type="string",
+     *         format="date",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Started abonnement date",
+     *         in="formData",
+     *         name="debut_abonnement",
+     *         type="string",
+     *         format="date",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Membre inserted",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Membre"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
-        //
+        $membre = Membre::find($id);
+
+        $validator = Validator::make($request->all(), [
+                    'id_personne' => 'required|numeric',
+                    'id_abonnement' => 'required|numeric',
+                    'date_inscription' => 'required|date_format:"Y-m-d"',
+                    'debut_abonnement' => 'required|date_format:"Y-m-d"',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                            ['errors' => $validator->errors()->all()], 422); // HTTP Status code
+        }
+
+        if (empty($fonction)) {
+            return response()->json(
+                            ['error' => 'this membre does not exist'], 404); // HTTP Status code
+        }
+
+        $membre->fill(Input::all());
+        if ($membre->save()) {
+            return response()->json(
+                            ['Membre have correctly update'], 200
+            );
+        }
+        return response()->json(
+                        ['errors' => 'update error'], 422); // HTTP Status code
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $membre = Membre::find($id);
+
+        if (empty($membre)) {
+            return response()->json(
+                            ['error' => 'this membre does not exist'], 404); // HTTP Status code
+        }
+
+        if ($membre->delete()) {
+            return response()->json(
+                            ['Membre have correctly deleted'], 200); // HTTP Status code
+        }
+        return response()->json(
+                        ['Membre have failed deleted'], 422); // HTTP Status code
     }
+
 }

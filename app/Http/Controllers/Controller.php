@@ -11,12 +11,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 /**
  * @SWG\Swagger(
  *     schemes={"http"},
- *     host="mycine.com",
+ *     host="localhost:1337",
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
- *         title="API Mycine.com ",
- *         description="This API get all of the informations that you need of a cinematographic database",
+ *         title="Swagger Petstore",
+ *         description="This is a sample server Petstore server.  You can find out more about Swagger at <a href=""http://swagger.io"">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key ""special-key"" to test the authorization filters",
  *         termsOfService="http://helloreverb.com/terms/",
  *         @SWG\Contact(
  *             email="apiteam@wordnik.com"
