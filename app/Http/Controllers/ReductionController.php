@@ -39,15 +39,6 @@ class ReductionController extends Controller
         return $reduc;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -133,10 +124,7 @@ class ReductionController extends Controller
         }
 
         $reduc = new Reduction(Input::all());
-        /*$reduc->nom = $request->nom;
-        $reduc->pourcentage_reduction = $request->pourcentage_reduction;
-        $reduc->date_debut = $request->date_debut;
-        $reduc->date_fin = $request->date_fin;*/
+
         if($reduc->save()){
             return response()->json($reduc, 200); //HTTP Status code
         }
@@ -192,17 +180,6 @@ class ReductionController extends Controller
                 ['error' => 'Woops! The discount that you looking for doesn\'t exist!'],404); //HTTP Status code
         }
         return $reduc;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
