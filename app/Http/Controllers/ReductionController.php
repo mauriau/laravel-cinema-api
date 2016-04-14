@@ -50,6 +50,7 @@ class ReductionController extends Controller
      *     path="/reduction",
      *     summary="Add a discount.",
      *     tags={"reduction"},
+     *     operationId="postReducation",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         name="nom",
@@ -106,8 +107,6 @@ class ReductionController extends Controller
      */
     public function store(Request $request)
     {
-       // $reduc = new Reduction();
-
         $validator = Validator::make($request->all(),[
             'nom'=>'required|string|unique:reductions,nom',
             'date_debut'=>'date|before:date_fin',
@@ -140,6 +139,7 @@ class ReductionController extends Controller
      *     path="/reduction/{id_reduction}",
      *     summary="Display a discount.",
      *     tags={"reduction"},
+     *     operationId="getReducation",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         name="id_reduction",
@@ -196,6 +196,7 @@ class ReductionController extends Controller
      *     path="/reduction/{id_reduction}",
      *     summary="Modify a discount.",
      *     tags={"reduction"},
+     *     operationId="putReducation",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         name="id_reduction",
@@ -305,6 +306,7 @@ class ReductionController extends Controller
      *     path="/reduction/{id_reduction}",
      *     summary="Delete a discount.",
      *     tags={"reduction"},
+     *     operationId="deleteReducation",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
      *         name="id_reduction",
