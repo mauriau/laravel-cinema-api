@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Swagger Petstore",
-        "description": "This is a sample server Petstore server.  You can find out more about Swagger at <a href=\"http://swagger.io\">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key \"special-key\" to test the authorization filters",
+        "title": "API Mycine.com ",
+        "description": "This API get all of the informations that you need of a cinematographic database",
         "termsOfService": "http://helloreverb.com/terms/",
         "contact": {
             "email": "apiteam@wordnik.com"
@@ -13,8 +13,8 @@
         },
         "version": "1.0.0"
     },
-    "host": "petstore.swagger.io",
-    "basePath": "/v2",
+    "host": "mycine.com",
+    "basePath": "/",
     "schemes": [
         "http"
     ],
@@ -41,9 +41,303 @@
                     }
                 }
             }
+        },
+        "/reduction": {
+            "get": {
+                "tags": [
+                    "reduction"
+                ],
+                "summary": "Display all of the discounts.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "reduction"
+                ],
+                "summary": "Add a discount.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Name of the discount",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "date_debut",
+                        "in": "formData",
+                        "description": "Begin of the discount",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "date_fin",
+                        "in": "formData",
+                        "description": "End of the discount",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "pourcentage_reduction",
+                        "in": "formData",
+                        "description": "Percentage of the discount",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            }
+        },
+        "/reduction/{id_reduction}": {
+            "get": {
+                "tags": [
+                    "reduction"
+                ],
+                "summary": "Display a discount.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_reduction",
+                        "in": "path",
+                        "description": "Id of the discount",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The discount that you looking for doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "reduction"
+                ],
+                "summary": "Modify a discount.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_reduction",
+                        "in": "path",
+                        "description": "Id of the discount",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Name of the discount",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "date_debut",
+                        "in": "formData",
+                        "description": "Begin of the discount",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "date_fin",
+                        "in": "formData",
+                        "description": "End of the discount",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "pourcentage_reduction",
+                        "in": "formData",
+                        "description": "Percentage of the discount",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The discount that you looking for doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "reduction"
+                ],
+                "summary": "Delete a discount.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_reduction",
+                        "in": "path",
+                        "description": "Id of the discount",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The discount that you want to delete doesn't exist!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reduction"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            }
         }
     },
-    "definitions": {},
+    "definitions": {
+        "Reduction": {
+            "required": [
+                "id_reduction"
+            ],
+            "properties": {
+                "id_reduction": {
+                    "type": "number",
+                    "format": "int64",
+                    "default": 1
+                },
+                "nom": {
+                    "type": "string",
+                    "format": "string",
+                    "default": "r\u00e9duction"
+                },
+                "date_debut": {
+                    "type": "date",
+                    "format": "date",
+                    "default": "2000-01-01"
+                },
+                "date_fin": {
+                    "type": "date",
+                    "format": "date",
+                    "default": "2000-01-02"
+                },
+                "pourcentage_reduction": {
+                    "type": "number",
+                    "format": "int64",
+                    "default": 0
+                }
+            },
+            "xml": {
+                "name": "Film"
+            }
+        }
+    },
     "externalDocs": {
         "description": "Find out more about Swagger",
         "url": "http://swagger.io"
