@@ -23,5 +23,9 @@ class Fonction extends Model
 
     protected $guarded = [];
 
+    public function personnes()
+    {
+        return $this->belongsToMany('App\Models\Personne', 'employes', 'id_fonction', 'id_personne');
+    }
         
 }

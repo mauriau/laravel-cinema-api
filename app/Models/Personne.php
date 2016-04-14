@@ -9,12 +9,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Personne extends Model
 {
+
     protected $table = 'personnes';
-
     protected $primaryKey = 'id_personne';
-
-	public $timestamps = false;
-
+    public $timestamps = false;
     protected $fillable = [
         'nom',
         'prenom',
@@ -25,8 +23,11 @@ class Personne extends Model
         'ville',
         'pays'
     ];
-
     protected $guarded = [];
 
-        
+    public function fonctions()
+    {
+        return $this->belongsToMany('App\Models\Fonction', 'employes', 'id_personne', 'id_fonction');
+    }
+
 }

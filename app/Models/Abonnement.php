@@ -22,5 +22,13 @@ class Abonnement extends Model
 
     protected $guarded = [];
 
-        
+    public function forfait()
+    {
+        return $this->belongsTo('App\Models\Forfait', 'id_forfait');
+    }
+    
+    public function membre()
+    {
+        return $this->hasMany('App\Models\Membre', 'id_membre');
+    }
 }

@@ -24,5 +24,9 @@ class Membre extends Model
 
     protected $guarded = [];
 
+    public function abonnement()
+    {
+        return $this->belongsTo('App\Models\Abonnement', 'id_abonnement');
+    }
         
 }
