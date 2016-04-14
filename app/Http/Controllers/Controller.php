@@ -16,7 +16,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
  *     @SWG\Info(
  *         version="1.0.0",
  *         title="API Mycine.com ",
- *         description="Voici l'API permettant de récupérer des informations d'une base de données d'oeuvres cinématographique.",
+ *         description="This API get all of the informations that you need of a cinematographic database",
  *         termsOfService="http://helloreverb.com/terms/",
  *         @SWG\Contact(
  *             email="apiteam@wordnik.com"
