@@ -33,7 +33,7 @@ class FilmController extends Controller
     public function index()
     {
         $films = Film::all();
-
+    }
     /**
      * Show the form for creating a new resource.
      *
