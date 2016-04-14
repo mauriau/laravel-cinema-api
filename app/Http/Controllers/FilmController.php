@@ -16,9 +16,7 @@ class FilmController extends Controller
      */
     public function index()
     {
-        \DB::enableQueryLog();
-        $films = Film::get();
-        print_r(\DB::getQueryLog());
+        $films = Film:all();
         return $films;
     }
 
@@ -27,6 +25,14 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getDistributeurs();
+    {
+        \DB::enableQueryLog();        
+        $distributeurs = Film:where('id_distributeur', '<>', 'null')->get();
+        print_r(\DB::getQueryLog());
+        return $distributeurs;
+    }
     public function create()
     {
         //
