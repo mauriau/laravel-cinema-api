@@ -225,7 +225,7 @@ class GenreController extends Controller
         }
 
         $validator = Validator::make($request->all(),[
-            'nom'=>'required|string|unique:genres,nom',
+            'nom'=>'string|unique:genres,nom',
         ]);
 
         if($validator->fails()){

@@ -22,7 +22,7 @@ class Genre extends Model
 
     protected $primaryKey = 'id_genre';
 
-	public $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'nom'
@@ -30,5 +30,8 @@ class Genre extends Model
 
     protected $guarded = [];
 
-        
+    public function films()
+    {
+        return $this->hasMany('App\Models\Film', 'id_genre');
+    }        
 }

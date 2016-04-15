@@ -275,10 +275,10 @@ class ReductionController extends Controller
         }
 
         $validator = Validator::make($request->all(),[
-            'nom'=>'required|string',
+            'nom'=>'string',
             'date_debut'=>'date|before:date_fin',
             'date_fin'=>'date|after:date_debut',
-            'pourcentage_reduction'=>'required|numeric|between:0,100',
+            'pourcentage_reduction'=>'numeric|between:0,100',
         ]);
 
         if($validator->fails()){

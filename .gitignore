@@ -7,3 +7,5 @@ Homestead.json
 .env
 /nbproject
 /.idea
+/storage
+/storage/docs/api-docs.json
