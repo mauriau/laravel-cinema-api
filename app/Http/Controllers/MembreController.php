@@ -239,7 +239,7 @@ class MembreController extends Controller
      *         description="id of membre",
      *         in="formData",
      *         name="id_membre",
-     *         type="integer,"
+     *         type="integer",
      *         required=true,
      *     ),
      *     @SWG\Parameter(
