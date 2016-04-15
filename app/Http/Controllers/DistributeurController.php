@@ -6,13 +6,32 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Distribtueur;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 
 class DistributeurController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @SWG\Get(
+     *     path="/distributeur",
+     *     summary="Show distributeur.",
+     *     tags={"distributeur"},
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Distributeur")
+     *          ),
+     *     ),
+     *     @SWG\Response(
+     *          response="default",
+     *          description="An error has been occured",
+     *     ),
+     * )
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -20,24 +39,102 @@ class DistributeurController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @SWG\Post(
+     *     path="/distributeur",
+     *     summary="Ajouter un distributeur.",
+     *     tags={"distributeur"},
+     *     operationId="postDistributeur",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="nom",
+     *         in="formData",
+     *         description="Nom du distributeur",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="telephone",
+     *         in="formData",
+     *         description="Telephone",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="adresse",
+     *         in="formData",
+     *         description="Adresse",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="cpostal",
+     *         in="formData",
+     *         description="Code postal",
+     *         required=false,
+     *         type="string",
+     *     ),
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     *     @SWG\Parameter(
+     *         name="ville",
+     *         in="formData",
+     *         description="Ville",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="pays",
+     *         in="formData",
+     *         description="Pays",
+     *         required=false,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Distributeur")
+     *          ),
+     *     ),
+     *     @SWG\Response(
+     *          response=404,
+     *          description="Woops! The informations can't be validated!",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Distributeur")
+     *          ),
+     *     ),
+     *     @SWG\Response(
+     *          response="default",
+     *          description="An error has been occured",
+     *     ),
+     * )
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'nom'=>'required|string|unique:distributeurs,nom',
+            'telephone'=>'string',
+            'cpostal'=>'string',
+            'ville'=>'string',
+            'pays'=>'string',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(
+                [
+                    'message' => 'Woops! The informations can\'t be validated!',
+                    'errors' => $validator->errors()->all()
+                ], 422); //HTTP Status code
+        }
+
+        $reduc = new Distributeur(Input::all());
+
+        if($reduc->save()){
+            return response()->json($reduc, 200); //HTTP Status code
+        }
     }
 
     /**
