@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Models\Film;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -310,6 +309,64 @@ class FilmController extends Controller
         }
 
         $film->delete();
+    }
+
+    /**
+     * @SWG\Get(
+     *     path="/film/{id_film}/extrats/{genre}/{distributeur}",
+     *     summary="Display the specified film with his extras.",
+     *     tags={"film"},
+     *     operationId="getFilmWithExtras",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Film id to get",
+     *         in="path",
+     *         name="id_film",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Get genre ? Yes : 1, No : 0, default : 0",
+     *         in="path",
+     *         name="genre",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Get distributeur ? Yes : 1, No : 0, default : 0",
+     *         in="path",
+     *         name="distributeur",
+     *         required=false,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *             ref="#/definitions/Film"
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Film does not exist",
+     *     )
+     * )
+     */
+    public function getFilmWithExtras($id, $genre = 0, $distributeur = 0)
+    {
+        $film = Film::find($id);
+
+        if (empty($film)) {
+            return response()->json(
+                            ['error' => 'this film does not exist'], 404); // HTTP Status code
+        }
+        if ($genre) {
+            $film->genre;
+        }
+        if ($distributeur) {
+            $film->distributeur;
+        }
+        return $film;
     }
 
 }
