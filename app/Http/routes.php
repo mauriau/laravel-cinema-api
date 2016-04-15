@@ -23,6 +23,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('abonnement', 'AbonnementController');
     Route::resource('historique', 'HistoriqueController');
     Route::resource('forfait', 'ForfaitController');
+    Route::resource('genre', 'GenreController');
+    Route::resource('distributeur', 'DistrubteurController');
 
     Route::get('membre/{id_membre}/extras/{pers}/{abo}/{forfait}', [
         'as' => 'getMembreWithExtras', 'uses' => 'MembreController@getMembreWithExtras'
@@ -34,6 +36,10 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
     Route::get('fonction/{id_fonction}/personnes', [
         'as' => 'fonctionWithPersonnes', 'uses' => 'FonctionController@getPersonnes'
+    ]);
+
+    Route::get('/film/{id_film}/extrats/{genre}/{distributeur}', [
+        'as' => 'getFilmWithExtras', 'uses' => 'FilmController@getFilmWithExtras'
     ]);
 });
 

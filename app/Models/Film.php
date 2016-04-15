@@ -21,12 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Film extends Model
 {
+
     protected $table = 'films';
-
     protected $primaryKey = 'id_film';
-
     public $timestamps = false;
-
     protected $fillable = [
         'id_genre',
         'id_distributeur',
@@ -37,12 +35,16 @@ class Film extends Model
         'duree_minutes',
         'annee_production'
     ];
-
     protected $guarded = [];
 
     public function genre()
     {
         return $this->belongsTo('App\Models\Genre', 'id_genre');
-    }    
-        
+    }
+
+    public function distributeur()
+    {
+        return $this->belongsTo('App\Models\Distribuetur', 'id_distributeur');
+    }
+
 }
