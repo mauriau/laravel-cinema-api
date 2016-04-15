@@ -16,19 +16,25 @@ use Illuminate\Database\Eloquent\Model;
  */
 class HistoriqueMembre extends Model
 {
+
     protected $table = 'historique_membre';
-
     protected $primaryKey = 'id_historique';
-
-	public $timestamps = false;
-
+    public $timestamps = false;
     protected $fillable = [
         'id_membre',
         'id_seance',
         'date'
     ];
-
     protected $guarded = [];
 
-        
+//    public function membre()
+//    {
+//        return $this->belongsTo('App\Models\Membre', 'id_membre');
+//    }
+//
+//    public function sceance()
+//    {
+//        return $this->belongsTo('App\Models\Sceance', 'id_sceance');
+//    }
+
 }

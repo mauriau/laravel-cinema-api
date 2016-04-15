@@ -17,12 +17,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Membre extends Model
 {
+
     protected $table = 'membres';
 
     protected $primaryKey = 'id_membre';
-
     public $timestamps = false;
-
     protected $fillable = [
         'id_personne',
         'id_abonnement',
@@ -41,5 +40,10 @@ class Membre extends Model
     {
         return $this->belongsTo('App\Models\Personne', 'id_personne');
     }
-        
+
+    public function historique()
+    {
+        return $this->belongsToMany('App\Models\HistoriqueMembre', 'id_historique');
+    }
+
 }

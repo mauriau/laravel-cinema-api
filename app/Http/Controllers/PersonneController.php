@@ -37,15 +37,81 @@ class PersonneController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @SWG\Post(
+     *     path="/personne",
+     *     summary="Store a new personne in storage.",
+     *     tags={"personne"},
+     *     operationId="postPersonne",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Nom Identifier",
+     *         in="formData",
+     *         name="nom",
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Prenom Identifier",
+     *         in="formData",
+     *         name="prenom",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="Date de naissance",
+     *         in="formData",
+     *         name="date_naissance",
+     *         type="string",
+     *         format="date"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="email of the personne",
+     *         in="formData",
+     *         name="email",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="adresse of the personne",
+     *         in="formData",
+     *         name="adresse",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="code postal of the personne",
+     *         in="formData",
+     *         name="cpostal",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="ville of the personne",
+     *         in="formData",
+     *         name="ville",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         description="email of the personne",
+     *         in="formData",
+     *         name="pays",
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Personne does not exist",
+     *     )
+     * )
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                    'email' => 'required|unique:personne', 'nom' => 'required:personne', 'prenom' => 'required:personne'
+                    'email' => 'required|unique:personnes,email',
+                    'nom' => 'required',
+                    'prenom' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -66,18 +132,25 @@ class PersonneController extends Controller
         }
     }
 
-        /**
+    /**
      * @SWG\Get(
      *     path="/personne/{id_personne}/fonctions",
      *     summary="Affiche les personnes qui on la fonction {id}",
-     *     tags={"fonction_personne"},
+     *     tags={"personne"},
      *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Personne id to get",
+     *         in="path",
+     *         name="id_personne",
+     *         required=true,
+     *         type="integer",
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="successful operation",
      *         @SWG\Schema(
      *             type="array",
-     *             @SWG\Items(ref="#/definitions/fonction")
+     *             @SWG\Items(ref="#/definitions/Personne")
      *         ),
      *     ),
      * )
@@ -160,7 +233,8 @@ class PersonneController extends Controller
      *         description="Date de naissance",
      *         in="formData",
      *         name="date_naissance",
-     *         type="date"
+     *         type="string",
+     *         format="date"
      *     ),
      *     @SWG\Parameter(
      *         description="email of the personne",
@@ -189,7 +263,7 @@ class PersonneController extends Controller
      *     @SWG\Parameter(
      *         description="email of the personne",
      *         in="formData",
-     *         name="paysl",
+     *         name="pays",
      *         type="string"
      *     ),
      *     @SWG\Response(
@@ -211,10 +285,10 @@ class PersonneController extends Controller
         $personne = Personne::find($id);
 
         $validator = Validator::make($request->all(), [
-                    'nom' => 'required',
-                    'prenom' => 'required',
-                    'date_naissance' => 'date|required',
-                    'email' => 'required|unique:personne',
+                    'nom' => 'string',
+                    'prenom' => 'string',
+                    'date_naissance' => 'date',
+                    'email' => 'string|unique:personnes,email',
                     'cpostal' => 'string',
                     'ville' => 'string',
                     'pays' => 'string',
@@ -230,8 +304,11 @@ class PersonneController extends Controller
                             ['error' => 'this personne does not exist'], 404); // HTTP Status code
         }
 
-        $personne = new Personne(Input::all());
+        $personne->fill(Input::all());
         $personne->save();
+        return response()->json(
+                        ['Fields have correctly update'], 200
+        );
     }
 
     /**

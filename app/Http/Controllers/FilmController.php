@@ -109,7 +109,7 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                    'titre' => 'required|unique:films',
+                    'titre' => 'required|unique:films,titre',
                     'id_genre' => 'required|exists:genres,id_genre',
         ]);
 
@@ -250,7 +250,7 @@ class FilmController extends Controller
         $film = Film::find($id);
 
         $validator = Validator::make($request->all(), [
-                    'titre' => 'required|unique:films',
+                    'titre' => 'required|unique:films,titre',
         ]);
 
         if ($validator->fails()) {
@@ -263,8 +263,15 @@ class FilmController extends Controller
                             ['error' => 'this film does not exist'], 404); // HTTP Status code
         }
 
-        $film->titre = $request->titre;
-        $film->save();
+        $film->fill(Input::all());
+        if ($film->save()) {
+            return response()->json(
+                            ['Fields have been correctly update'], 200
+            );
+        }
+        return response()->json(
+                        ['Fields have been fail update'], 422
+        );
     }
 
     /**

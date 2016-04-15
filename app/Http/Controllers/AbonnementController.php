@@ -33,8 +33,7 @@ class AbonnementController extends Controller
      */
     public function index()
     {
-        $abo = Abonnement::all();
-        return $abo;
+        return Abonnement::all();
     }
 
     /**
@@ -73,7 +72,6 @@ class AbonnementController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                    'id_forfait' => 'required|numeric|exists:forfaits',
                     'debut' => 'required|date_format:"Y-m-d"|after:today',
         ]);
 
@@ -137,13 +135,13 @@ class AbonnementController extends Controller
      *     operationId="putAbonnement",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
-     *         description="id of forfait",
+     *         description="id of abonnement",
      *         in="formData",
-     *         name="id_forfait",
+     *         name="id_abonnement",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
-     *         description="Time of the abonnement",
+     *         description="Started of the abonnement",
      *         in="formData",
      *         name="debut",
      *         type="string",
@@ -168,7 +166,7 @@ class AbonnementController extends Controller
         $abonnement = Abonnement::find($id);
 
         $validator = Validator::make($request->all(), [
-                    'id_forfait' => 'required|numeric|exists:forfaits',
+                    'id_abonnement' => 'required|numeric|exists:abonnements',
                     'debut' => 'required|date_format:"Y-m-d"|after:today',
         ]);
 
@@ -223,7 +221,7 @@ class AbonnementController extends Controller
     {
         $abonnement = Abonnement::find($id);
 
-        if (empty($abo)) {
+        if (empty($abonnement)) {
             return response()->json(
                             ['error' => 'this abonnement does not exist'], 404); // HTTP Status code
         }

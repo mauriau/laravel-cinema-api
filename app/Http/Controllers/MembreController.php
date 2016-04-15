@@ -60,7 +60,7 @@ class MembreController extends Controller
      *     operationId="postMembre",
      *     produces={"application/xml", "application/json"},
      *     @SWG\Parameter(
-     *         description="id of membre",
+     *         description="id of personne",
      *         in="formData",
      *         name="id_personne",
      *         type="integer"
@@ -229,42 +229,8 @@ class MembreController extends Controller
     }
 
     /**
-     * @SWG\Get(
-     *     path="/membre/{id_membre}/abonnement",
-     *     summary="Display a member with his abonnement",
-     *     tags={"membre"},
-     *     operationId="getMembreWithPersonne",
-     *     produces={"application/xml", "application/json"},
-     *     @SWG\Parameter(
-     *         description="Id of membre",
-     *         in="path",
-     *         name="id_membre",
-     *         required=true,
-     *         type="integer",
-     *     ),
-     *     @SWG\Response(
-     *         response=200,
-     *         description="Membre finded",
-     *         @SWG\Schema(
-     *             ref="#/definitions/Membre"
-     *         ),
-     *     ),
-     *     @SWG\Response(
-     *         response=404,
-     *         description="Membre does not exist",
-     *     )
-     * )
-     */
-    private function getAbonnement($id)
-    {
-        $membre = membre::find($id);
-        $membre->abonnement;
-        return $membre;
-    }
-
-    /**
      * @SWG\Put(
-     *     path="/membre/{id_mebre}",
+     *     path="/membre/{id_membre}",
      *     summary="Update a Membre",
      *     tags={"membre"},
      *     operationId="putMembre",
@@ -272,14 +238,23 @@ class MembreController extends Controller
      *     @SWG\Parameter(
      *         description="id of membre",
      *         in="formData",
+     *         name="id_membre",
+     *         type="integer,"
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         description="id of membre",
+     *         in="formData",
      *         name="id_personne",
-     *         type="integer"
+     *         type="integer",
+     *         required=true,
      *     ),
      *     @SWG\Parameter(
      *         description="Id of abonnement",
      *         in="formData",
      *         name="id_abonnement",
      *         type="integer",
+     *         required=true,
      *     ),
      *     @SWG\Parameter(
      *         description="Created date",
@@ -313,10 +288,11 @@ class MembreController extends Controller
         $membre = Membre::find($id);
 
         $validator = Validator::make($request->all(), [
+                    'id_membre' => 'required|numeric|exists:membres',
                     'id_personne' => 'required|numeric',
                     'id_abonnement' => 'required|numeric',
-                    'date_inscription' => 'required|date_format:"Y-m-d"',
-                    'debut_abonnement' => 'required|date_format:"Y-m-d"',
+                    'date_inscription' => 'date_format:"Y-m-d"',
+                    'debut_abonnement' => 'date_format:"Y-m-d"',
         ]);
 
         if ($validator->fails()) {
@@ -339,21 +315,47 @@ class MembreController extends Controller
                         ['errors' => 'update error'], 422); // HTTP Status code
     }
 
+    /**
+     * @SWG\Delete(
+     *     path="/membre/{id_membre}",
+     *     summary="Remove the specified member from storage.",
+     *     tags={"membre"},
+     *     operationId="deleteMembre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         description="Membre identifier",
+     *         in="path",
+     *         name="id_membre",
+     *         type="integer",
+     *         @SWG\Schema(
+     *             type="integer",
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Member does not exist",
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $membre = Membre::find($id);
 
         if (empty($membre)) {
             return response()->json(
-                            ['error' => 'this membre does not exist'], 404); // HTTP Status code
+                            ['error' => 'This member does not exist'], 404); // HTTP Status code
         }
 
         if ($membre->delete()) {
             return response()->json(
-                            ['Membre have correctly deleted'], 200); // HTTP Status code
+                            ['Member have been correctly deleted'], 200); // HTTP Status code
         }
         return response()->json(
-                        ['Membre have failed deleted'], 422); // HTTP Status code
+                        ['Member have been failed deleted'], 422); // HTTP Status code
     }
 
 }

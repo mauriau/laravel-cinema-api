@@ -112,7 +112,7 @@ class FonctionController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                    'nom' => 'required|unique:fonction'
+                    'nom' => 'required|unique:fonctions,nom'
         ]);
 
         if ($validator->fails()) {
