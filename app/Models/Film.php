@@ -44,7 +44,7 @@ class Film extends Model
 
     public function distributeur()
     {
-        return $this->belongsTo('App\Models\Distribuetur', 'id_distributeur');
+        return $this->belongsTo('App\Models\Distributeur', 'id_distributeur');
     }
 
 }
