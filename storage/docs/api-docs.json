@@ -439,6 +439,108 @@
             }
         }
     },
+    "/distributeur": {
+            "get": {
+                "tags": [
+                    "distributeur"
+                ],
+                "summary": "Display a listing of all distributeurs.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "distributeur"
+                ],
+                "summary": "Ajouter distributeur",
+                "operationId": "postDistributeur",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Nom",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "telephone",
+                        "in": "formData",
+                        "description": "telephone",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "adresse",
+                        "in": "formData",
+                        "description": "adresse",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "cpostal",
+                        "in": "formData",
+                        "description": "Code postal",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ville",
+                        "in": "formData",
+                        "description": "Ville",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pays",
+                        "in": "formData",
+                        "description": "Pays",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
+            }
+        },
+
     "definitions": {
         "Reduction": {
             "required": [
