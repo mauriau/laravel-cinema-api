@@ -24,7 +24,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::resource('historique', 'HistoriqueController');
     Route::resource('forfait', 'ForfaitController');
     Route::resource('genre', 'GenreController');
-    Route::resource('distributeur', 'DistrubteurController');
+    Route::resource('distributeur', 'DistribteurController');
 
     Route::get('membre/{id_membre}/extras/{pers}/{abo}/{forfait}', [
         'as' => 'getMembreWithExtras', 'uses' => 'MembreController@getMembreWithExtras'
