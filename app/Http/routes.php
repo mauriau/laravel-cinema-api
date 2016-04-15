@@ -22,3 +22,4 @@ Route::resource('film', 'FilmController');
 Route::resource('salle', 'SalleController');
 Route::resource('distributeur', 'DistributeurController');
 Route::resource('genre', 'GenreController');
+Route::resource('seance', 'SceanceController');
