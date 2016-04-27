@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 /**
  * @SWG\Swagger(
  *     schemes={"http"},
- *     host="mycine.com",
+ *     host="localhost:1337",
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
