@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "API Mycine.com ",
-        "description": "This API get all of the informations that you need of a cinematographic database",
+        "title": "Swagger Petstore",
+        "description": "This is a sample server Petstore server.  You can find out more about Swagger at <a href=\"http://swagger.io\">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key \"special-key\" to test the authorization filters",
         "termsOfService": "http://helloreverb.com/terms/",
         "contact": {
             "email": "apiteam@wordnik.com"
@@ -13,18 +13,18 @@
         },
         "version": "1.0.0"
     },
-    "host": "mycine.com",
+    "host": "localhost:1337",
     "basePath": "/",
     "schemes": [
         "http"
     ],
     "paths": {
-        "/genre": {
+        "/abonnement": {
             "get": {
                 "tags": [
-                    "genre"
+                    "abonnement"
                 ],
-                "summary": "Display all of the genres.",
+                "summary": "Display a listing of all abonnement.",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -35,75 +35,66 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/Genre"
+                                "$ref": "#/definitions/Abonnement"
                             }
                         }
-                    },
-                    "default": {
-                        "description": "An error has been occured"
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "genre"
+                    "abonnement"
                 ],
-                "summary": "Add a genre.",
-                "operationId": "postGenre",
+                "summary": "Store a new created abonnement in storage.",
+                "operationId": "postAbonnement",
                 "produces": [
                     "application/xml",
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "nom",
+                        "name": "id_forfait",
                         "in": "formData",
-                        "description": "Name of the genre",
-                        "required": true,
-                        "type": "string"
+                        "description": "id of forfait",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "debut",
+                        "in": "formData",
+                        "description": "Time of the abonnement",
+                        "type": "string",
+                        "format": "date"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
+                            "$ref": "#/definitions/Abonnement"
                         }
                     },
-                    "404": {
-                        "description": "Woops! The informations can't be validated!",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "An error has been occured"
+                    "422": {
+                        "description": "Unprocessable Entity"
                     }
                 }
             }
         },
-        "/genre/{id_genre}": {
+        "/abonnement/{id_abonnement}": {
             "get": {
                 "tags": [
-                    "genre"
+                    "abonnement"
                 ],
-                "summary": "Display a genre.",
-                "operationId": "getGenre",
+                "summary": "Display the specified abonnement.",
+                "operationId": "getAbonnement",
                 "produces": [
                     "application/xml",
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id_genre",
+                        "name": "id_abonnement",
                         "in": "path",
-                        "description": "Id of the genre",
+                        "description": "Abonnement id to get",
                         "required": true,
                         "type": "integer"
                     }
@@ -112,135 +103,88 @@
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
+                            "$ref": "#/definitions/Abonnement"
                         }
                     },
                     "404": {
-                        "description": "Woops! The genre that you looking for doesn't exist!",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "An error has been occured"
+                        "description": "Abonnement does not exist"
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "genre"
+                    "abonnement"
                 ],
-                "summary": "Modify a genre.",
-                "operationId": "putGenre",
+                "summary": "Update an existing abonnement in storage.",
+                "operationId": "putAbonnement",
                 "produces": [
                     "application/xml",
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id_genre",
-                        "in": "path",
-                        "description": "Id of the genre",
-                        "required": true,
+                        "name": "id_forfait",
+                        "in": "formData",
+                        "description": "id of forfait",
                         "type": "integer"
                     },
                     {
-                        "name": "nom",
+                        "name": "debut",
                         "in": "formData",
-                        "description": "Name of the genre",
-                        "required": true,
-                        "type": "string"
+                        "description": "Time of the abonnement",
+                        "type": "string",
+                        "format": "date"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Woops! The genre that you looking for doesn't exist!",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
+                        "description": "successful operation"
                     },
                     "422": {
-                        "description": "Woops! The informations can't be validated!",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
+                        "description": "Unprocessable Entity"
                     },
-                    "default": {
-                        "description": "An error has been occured"
+                    "404": {
+                        "description": "Abonnement does not exist"
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "genre"
+                    "abonnement"
                 ],
-                "summary": "Delete a genre.",
-                "operationId": "deleteGenre",
+                "summary": "Remove the specified abonnement from storage.",
+                "operationId": "deleteAbonnement",
                 "produces": [
                     "application/xml",
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id_genre",
+                        "name": "id_abonnement",
                         "in": "path",
-                        "description": "Id of the genre",
-                        "required": true,
+                        "description": "Abonnement identifier",
+                        "schema": {
+                            "type": "integer"
+                        },
                         "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
+                        "description": "successful operation"
                     },
                     "404": {
-                        "description": "Woops! The genre that you want to delete doesn't exist!",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "An error has been occured"
+                        "description": "Abonnement does not exist"
                     }
                 }
             }
         },
-        "/personne": {
+        "/film": {
             "get": {
                 "tags": [
-                    "personne"
+                    "film"
                 ],
-                "summary": "Display a listing of all personnes.",
+                "summary": "Affiche la liste des films.",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -251,30 +195,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/Perrsonne"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/reduction": {
-            "get": {
-                "tags": [
-                    "reduction"
-                ],
-                "summary": "Display all of the discounts.",
-                "produces": [
-                    "application/xml",
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Reduction"
+                                "$ref": "#/definitions/Film"
                             }
                         }
                     },
@@ -285,10 +206,10 @@
             },
             "post": {
                 "tags": [
-                    "reduction"
+                    "film"
                 ],
-                "summary": "Add a discount.",
-                "operationId": "postReducation",
+                "summary": "Store a newly created film in storage.",
+                "operationId": "postFilm",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -356,7 +277,6 @@
                     "reduction"
                 ],
                 "summary": "Display a discount.",
-                "operationId": "getReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -399,7 +319,6 @@
                     "reduction"
                 ],
                 "summary": "Modify a discount.",
-                "operationId": "putReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -481,7 +400,6 @@
                     "reduction"
                 ],
                 "summary": "Delete a discount.",
-                "operationId": "deleteReducation",
                 "produces": [
                     "application/xml",
                     "application/json"
@@ -521,29 +439,109 @@
             }
         }
     },
-    "definitions": {
-        "Genre": {
-            "required": [
-                "id_genre"
-            ],
-            "properties": {
-                "id_genre": {
-                    "description": "Class Genre",
-                    "type": "number",
-                    "format": "int64",
-                    "default": 1
-                },
-                "nom": {
-                    "description": "Class Genre",
-                    "type": "string",
-                    "format": "string",
-                    "default": "genre"
+    "/distributeur": {
+            "get": {
+                "tags": [
+                    "distributeur"
+                ],
+                "summary": "Display a listing of all distributeurs.",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    }
                 }
             },
-            "xml": {
-                "name": "Genre"
+            "post": {
+                "tags": [
+                    "distributeur"
+                ],
+                "summary": "Ajouter distributeur",
+                "operationId": "postDistributeur",
+                "produces": [
+                    "application/xml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nom",
+                        "in": "formData",
+                        "description": "Nom",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "telephone",
+                        "in": "formData",
+                        "description": "telephone",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "adresse",
+                        "in": "formData",
+                        "description": "adresse",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "cpostal",
+                        "in": "formData",
+                        "description": "Code postal",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ville",
+                        "in": "formData",
+                        "description": "Ville",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pays",
+                        "in": "formData",
+                        "description": "Pays",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Woops! The informations can't be validated!",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Distributeur"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error has been occured"
+                    }
+                }
             }
         },
+
+    "definitions": {
         "Reduction": {
             "required": [
                 "id_reduction"

@@ -11,12 +11,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 /**
  * @SWG\Swagger(
  *     schemes={"http"},
- *     host="mycine.com",
+ *     host="localhost:1337",
  *     basePath="/",
  *     @SWG\Info(
  *         version="1.0.0",
- *         title="API Mycine.com ",
- *         description="This API get all of the informations that you need of a cinematographic database",
+ *         title="API du cinema Nation",
+ *         description="API du cinema Nation qui permet de faire un CRUD sur les clients, les films, le personnel, les abonnements etc",
  *         termsOfService="http://helloreverb.com/terms/",
  *         @SWG\Contact(
  *             email="apiteam@wordnik.com"

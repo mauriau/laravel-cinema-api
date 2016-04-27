@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Models\Genre;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class GenreController extends Controller
 {
+
     /**
      * @SWG\Get(
      *     path="/genre",
@@ -38,7 +42,6 @@ class GenreController extends Controller
         $genre = Genre::all();
         return $genre;
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -84,21 +87,21 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'nom'=>'required|string|unique:genres,nom',
+        $validator = Validator::make($request->all(), [
+                    'nom' => 'required|string|unique:genres,nom',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(
-                [
-                    'message' => 'Woops! The informations can\'t be validated!',
-                    'errors' => $validator->errors()->all()
-                ], 422); //HTTP Status code
+                            [
+                        'message' => 'Woops! The informations can\'t be validated!',
+                        'errors' => $validator->errors()->all()
+                            ], 422); //HTTP Status code
         }
 
         $genre = new Genre(Input::all());
 
-        if($genre->save()){
+        if ($genre->save()) {
             return response()->json($genre, 200); //HTTP Status code
         }
     }
@@ -149,9 +152,9 @@ class GenreController extends Controller
     {
         $genre = Genre::find($id);
 
-        if(empty($genre)){
+        if (empty($genre)) {
             return response()->json(
-                ['error' => 'Woops! The genre that you looking for doesn\'t exist!'],404); //HTTP Status code
+                            ['error' => 'Woops! The genre that you looking for doesn\'t exist!'], 404); //HTTP Status code
         }
         return $genre;
     }
@@ -219,27 +222,25 @@ class GenreController extends Controller
     {
         $genre = Genre::find($id);
 
-        if(empty($genre)){
+        if (empty($genre)) {
             return response()->json(
-                ['error' => 'Woops! The genre that you looking for doesn\'t exist!'],404); //HTTP Status code
+                            ['error' => 'Woops! The genre that you looking for doesn\'t exist!'], 404); //HTTP Status code
         }
 
-        $validator = Validator::make($request->all(),[
-            'nom'=>'required|string|unique:genres,nom',
+        $validator = Validator::make($request->all(), [
+                    'nom' => 'string|unique:genres,nom',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(
-                ['errors' => $validator->errors()->all()], 422); //HTTP Status code
+                            ['errors' => $validator->errors()->all()], 422); //HTTP Status code
         }
 
         $genre->fill(Input::all());
         $genre->save();
         return response()->json(
-            ['Fields have correctly been updated'],
-            200
+                        ['Fields have correctly been updated'], 200
         );
-
     }
 
     /**
@@ -288,10 +289,66 @@ class GenreController extends Controller
     public function destroy($id)
     {
         $genre = Genre::find($id);
-        if(empty($genre)){
+        if (empty($genre)) {
             return response()->json(
-                ['error' => 'Woops! The genre that you want to delete doesn\'t exist!'],404); //HTTP Status code
+                            ['error' => 'Woops! The genre that you want to delete doesn\'t exist!'], 404); //HTTP Status code
         }
         $genre->delete();
     }
+
+    
+        /**
+     *
+     *
+     * @param  int  $id_genre
+     * @return \Illuminate\Http\Response
+     *
+     * @SWG\Get(
+     *     path="/genre/{id_genre}/films",
+     *     summary="Display a genre with films.",
+     *     tags={"genre"},
+     *     operationId="getGenre",
+     *     produces={"application/xml", "application/json"},
+     *     @SWG\Parameter(
+     *         name="id_genre",
+     *         in="path",
+     *         description="Id of the genre",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Genre")
+     *          ),
+     *     ),
+     *     @SWG\Response(
+     *          response=404,
+     *          description="Woops! The genre that you looking for doesn't exist!",
+     *          @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/Genre")
+     *          ),
+     *     ),
+     *     @SWG\Response(
+     *          response="default",
+     *          description="An error has been occured",
+     *     ),
+     * )
+     *
+     */
+    public function getFilms($id)
+    {
+        $genre = Genre::find($id);
+
+        if (empty($genre)) {
+            return response()->json(
+                            ['error' => 'this genre does not exist'], 404); // HTTP Status code
+        }
+        $genre->films;
+        return $genre;
+    }
+
 }
